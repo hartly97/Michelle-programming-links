@@ -1,0 +1,38 @@
+Safe Strings
+Active Support has the concept of (html) safe strings. A safe string is one that is marked as being insertable into HTML as is. It is trusted, no matter whether it has been escaped or not.
+
+Strings are considered to be unsafe by default:
+
+"".html_safe? # => false
+You can obtain a safe string from a given one with the html_safe method:
+
+s = "".html_safe
+s.html_safe? # => true
+It is important to understand that html_safe performs no escaping whatsoever, it is just an assertion:
+
+s = "<script>...</script>".html_safe
+s.html_safe? # => true
+s            # => "<script>...</script>"
+It is your responsibility to ensure calling html_safe on a particular string is fine.
+
+If you append onto a safe string, either in-place with concat/<<, or with +, the result is a safe string. Unsafe arguments are escaped:
+
+"".html_safe + "<" # => "&lt;"
+Safe arguments are directly appended:
+
+"".html_safe + "<".html_safe # => "<"
+These methods should not be used in ordinary views. Unsafe values are automatically escaped:
+
+<%= @review.title %> <%# fine, escaped if needed %>
+To insert something verbatim use the raw helper rather than calling html_safe:
+
+<%= raw @cms.current_template %> <%# inserts @cms.current_template as is %>
+or, equivalently, use <%==:
+
+<%== @cms.current_template %> <%# inserts @cms.current_template as is %>
+The raw helper calls html_safe for you:
+
+def raw(stringish)
+  stringish.to_s.html_safe
+end
+Defined in active_support/core_ext/string/output_safety.rb.
