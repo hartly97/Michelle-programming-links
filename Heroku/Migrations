@@ -1,0 +1,33 @@
+# Migrations when pushing to heroku
+$ git push heroku
+$ heroku run rails db:migrate
+
+#Heroku "release" phase
+
+Specify a command that is run after the application has been deployed, but before the new version is made available.
+
+Allows us to add "release" command to the applications Procfile (which you most likely have in your root already):
+
+web: bundle exec puma -C config/puma.rb
+
+release: rake db:migrate
+
+When we push to our git remote on Heroku, the buildpacks prepare our application, and right before release our release command takes over:
+
+remote: -----> Launching...
+remote:  !     Release command declared: this new release will not be available until the command succeeds.
+remote:        Released 
+remote:        https://my-application.herokuapp.com/ deployed to Heroku
+remote: 
+remote: Verifying deploy... done.
+remote: Running release command......... done.
+
+Database is migrated before you release the new version to the public. The benefits:
+
+1. Can't forget to run migrations
+2. Database has been migrated when your application is released
+3. Migrations can be run by anyone/anything that can push to the git remote
+4. If a migration fails, the deployment is halted, your database changes are rolled back (you did use transactions, right?), 
+  and your application keeps running.
+  
+Great for continous deployment and a stable deployment process.
