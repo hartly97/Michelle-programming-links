@@ -1,0 +1,47 @@
+Loading more seeds using Faker
+If you need, say, 100 movies, you can replace your seeds file with this:
+
+
+Movie.destroy_all
+ 
+100.times do |index|
+  Movie.create!(title: "Title #{index}",
+                director: "Director #{index}",
+                storyline: "Storyline #{index}",
+                watched_on: index.days.ago)
+end
+ 
+p "Created #{Movie.count} movies"
+But that doesn’t look realistic at all:
+
+
+$ rails runner 'p Movie.select(:title, :director, :storyline).last'
+#<Movie id: nil, title: "Title 99", director: "Director 99", storyline: "Storyline 99">
+Time to use Faker, a gem that generates random values. Add it into the development group inside your Gemfile:
+
+
+group :development, :test do
+  # ...
+ 
+  gem 'faker'
+end
+Run bundle install and use these seeds:
+
+
+Movie.destroy_all
+ 
+100.times do |index|
+  Movie.create!(title: Faker::Lorem.sentence(3, false, 0).chop,
+                director: Faker::Name.name,
+                storyline: Faker::Lorem.paragraph,
+                watched_on: Faker::Time.between(4.months.ago, 1.week.ago))
+end
+ 
+p "Created #{Movie.count} movies"
+
+Check one out again:
+
+
+$ rails runner 'p Movie.select(:title, :director, :storyline, :watched_on).last'
+#<Movie id: nil, title: "Minus perferendis delectus", director: "Scot Jenkins", 
+        storyline: "Quisquam aut dicta similique est repellendus. Maxi...", watched_on: "2015-06-25">
