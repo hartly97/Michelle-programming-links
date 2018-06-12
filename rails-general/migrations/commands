@@ -1,0 +1,11 @@
+rake db:migrate:status - To find the version of all migrations
+
+rake db:rollback
+
+rake db:rollback STEP=1 - rollback number of migration in one time
+
+rake db:rollback STEP=n - where n is number of migration for rollback from latest migration.
+
+Rollback a specific migration, then you should pass version of migration in next syntax.
+
+rake db:migrate:down VERSION=xxxxx  - where xxxxx is version number of migration.
