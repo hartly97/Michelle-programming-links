@@ -1,0 +1,57 @@
+
+Debugging with the web-console gem
+Web Console is a bit like byebug, but it runs in the browser. In any page you are developing, you can request a console 
+in the context of a view or a controller. The console would be rendered next to your HTML content.
+4.1 Console
+Inside any controller action or view, you can invoke the console by calling the console method.
+For example, in a controller:
+class PostsController < ApplicationController
+  def new
+    console
+    @post = Post.new
+  end
+end
+Or in a view:
+<% console %>
+ 
+<h2>New Post</h2>
+This will render a console inside your view. You don't need to care about the location of the consolecall; it won't be 
+rendered on the spot of its invocation but next to your HTML content.
+The console executes pure Ruby code: You can define and instantiate custom classes, create new models and inspect variables.
+Only one console can be rendered per request. Otherwise web-console will raise an error on the second console invocation.
+4.2 Inspecting Variables
+You can invoke instance_variables to list all the instance variables available in your context. If you want to list all 
+the local variables, you can do that with local_variables.
+4.3 Settings
+•	config.web_console.whitelisted_ips: Authorized list of IPv4 or IPv6 addresses and networks (defaults: 127.0.0.1/8, ::1).
+•	config.web_console.whiny_requests: Log a message when a console rendering is prevented (defaults: true).
+Since web-console evaluates plain Ruby code remotely on the server, don't try to use it in production.
+5 Debugging Memory Leaks
+A Ruby application (on Rails or not), can leak memory — either in the Ruby code or at the C code level.
+In this section, you will learn how to find and fix such leaks by using tool such as Valgrind.
+5.1 Valgrind
+Valgrind is an application for detecting C-based memory leaks and race conditions.
+There are Valgrind tools that can automatically detect many memory management and threading bugs, and profile your programs
+in detail. For example, if a C extension in the interpreter calls malloc() but doesn't properly call free(), this memory 
+won't be available until the app terminates.
+For further information on how to install Valgrind and use with Ruby, refer to Valgrind and Ruby by Evan Weaver.
+6 Plugins for Debugging
+There are some Rails plugins to help you to find errors and debug your application. Here is a list of useful plugins for 
+debugging:
+•	Footnotes Every Rails page has footnotes that give request information and link back to your source via TextMate.
+•	Query Trace Adds query origin tracing to your logs.
+•	Query Reviewer This Rails plugin not only runs "EXPLAIN" before each of your select queries in development, but provides
+a small DIV in the rendered output of each page with the summary of warnings for each query that it analyzed.
+•	Exception Notifier Provides a mailer object and a default set of templates for sending email notifications when errors 
+occur in a Rails application.
+•	Better Errors Replaces the standard Rails error page with a new one containing more contextual information, like source 
+code and variable inspection.
+•	RailsPanel Chrome extension for Rails development that will end your tailing of development.log. Have all information 
+about your Rails app requests in the browser — in the Developer Tools panel. Provides insight to db/rendering/total times,
+parameter list, rendered views and more.
+•	Pry An IRB alternative and runtime developer console.
+7 References
+•	byebug Homepage
+•	web-console Homepage
+
+
