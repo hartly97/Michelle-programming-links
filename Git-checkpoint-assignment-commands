@@ -1,0 +1,34 @@
+#Assignment work (doesn't merge to master)
+
+run git branch to see what branch you're in
+
+git checkout -b assignment-1
+
+git add .
+
+git commit -m "assignment-1:your message"
+
+git status
+
+git push origin assignment-1 (this goes it's own branch)
+
+git checkout master
+
+
+#Checkpoint work (that merges to master)
+
+git checkout -b checkpoint-1
+
+git add --a or git add .
+
+git commit -m "checkpoint-1:your message"
+
+git status
+
+git push origin checkpoint-1 (this only goes to it's own branch on the remote repo)
+
+git checkout master
+
+git merge checkpoint-1
+
+git push
