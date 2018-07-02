@@ -4,7 +4,7 @@ run git branch to see what branch you're in
 
 git checkout -b assignment-1
 
-git add .
+git add --a or git add . (windows)
 
 git commit -m "assignment-1:your message"
 
@@ -32,3 +32,14 @@ git checkout master
 git merge checkpoint-1
 
 git push
+
+
+Forgot to checkout to a new branch?
+
+git add --a or  git add . (windows)
+
+git status
+
+git checkout -b <branch-name>
+
+git status 
