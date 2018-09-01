@@ -1,0 +1,50 @@
+Map          
+The map() method is applied to an array or a hash. The job of map() is to apply a function or block to each member 
+of the array and return a new array.
+So, when you see                          
+def f(x)    
+x*x                  
+end                
+output_array =[1,2,3,4,5].map do |number|    
+f(number)                  
+end                          
+you read, for each  number   in [1,2,3,4,5] apply f(x) to return the array [f(1), f(2), f(3), f(4), f(5)]. 
+In this case, the answer is [1,4,9,16,25].One could encode it in traditional imperative programming as follows:            
+output_array = []            
+for number in 1..5    
+output_array.push( f(number) )                
+end                        
+
+Using map, for example:            
+output_array =[1,2,3,4,5].map do |number|    
+number*number                
+end                        
+
+Or, you could encode it as follows:            
+output_array =[1,2,3,4,5].map{|element| element*element}                  
+[1,2,3,4,5] is the array. 
+
+The function (or block) to be applied to each element is {|element| element*element }.With the { } syntax, 
+or the do-end syntax, the object in the vertical bars (represented by element) is the element of the array 
+currently being acted upon by the block, and the last object in any function or block is the return value, 
+so element*element is returned. 
+The net result is the following: 
+[1,4,9,16,25]          
+
+Suppose you wanted to provide data to a graphing program that plotted the square of the value.
+[1,2,3,4,5].map{|element| [element, element*element]}         
+In this case, each “point” is a tuple (array) with an element and its square.
+This returns the following:           
+[[1,1],[2,4],[3,9],[4,16],[5,25]]          
+The difference is that the block returns an array each time with the number and its square, so the result is 
+an array of arrays.Since map returns an array, you can cascade map calls. For example, you could have a map block
+square each element, and then a second map block add 100. 
+For example:            
+[1,2,3,4,5].map do |number|    
+number*number              
+end
+.map do |square|    
+square + 100                 
+end               
+=> [101, 104, 109, 116, 125]          
+A number of the more complex operations can be solved by cascading with map calls.
