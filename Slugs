@@ -1,0 +1,70 @@
+How you can tell Ruby on Rails to use pretty URLs
+A slug is a name given to a URL of a page, which derives from the publishing and printing industries. There is no single best way of routing on websites. Some use full words and sentences, some use an id, some use a combination of both. For example, Medium puts the id at the end of the URL slug.
+
+This is how to change the way that Rails finds records and routes to them:
+
+Create a method to generate the slug
+Add the slug to your records
+Override the to_param method in the models
+Specify you want the Rails routes to use the slug param.
+Update the find_by methods in your controllers to find a post by its slug
+Check out those verbose URLs in your browser!
+
+1. Generate the pretty URL strings
+It’s useful to have a method to use across your app to ensure that URLs are formatted the same way and won’t have issues when browsers try to display them. One way to do this is by including it in your base record class:
+
+# app/models/application_record.rb
+module ApplicationRecord
+  def to_slug(string)
+    string.parameterize.truncate(80, omission: '')
+  end
+end
+This uses the Rails methods parameterize (to replace special characters with hyphens) and truncate (to set a max length for the slug).
+
+2. Add slugs to your records
+Add the field to your records by first running a migration:
+
+rails generate migration AddSlugToPost slug:string
+rails rake db:migrate
+Then ensure that the create and update include the slug field.
+
+Post.create(slug: to_slug(name))
+If you’ve already created records, you can run a task to add the slugs in, such as the following (assuming you want a slug based on a name field).
+
+class Post < ApplicationRecord
+  def self.add_slugs
+    update(slug: to_slug(name))
+  end
+end
+Then in the terminal, run:
+
+rails console
+Post.add_slugs
+3. Override to_param
+Rails’ default to_param method returns the id of the record. If you override this, then when you add a record to a view, such as…
+
+<%= link_to "View post", @post %>
+… it will route to post/my-post-url-slug rather than the id, for example post/1 .
+
+class Post < ApplicationRecord
+  def to_param
+    slug
+  end
+end
+Performance issues: Computers find searching by ids quicker than strings, so there may be a performance impact of using the slug to find the records. There are alternative options, such as Stack Overflow, including the id then the slug after that.
+
+4. Set routes to use slugs
+Next up is updating config/routes.rb in your Rails project. The resources helper methods will by default use id. You can override this by telling it to use slugs instead.
+
+resources :post, param: :slug
+
+all the routes now using slugs instead of ids
+5. Find by slugs in your controllers
+Almost there… Lastly, you need to tell your controllers to find records by slug rather than id.
+
+class PostController < ApplicationController
+  def show
+    @post = Post.find_by(slug: params[:slug])
+  end
+end
+For more on find_by check out the Rails docs → apidock.com/rails/ActiveRecord/FinderMethods/find_by
