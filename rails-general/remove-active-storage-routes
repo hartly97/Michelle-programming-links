@@ -1,0 +1,37 @@
+Removing Active Storage Routes from Rails 5.2
+
+
+In your config/application.rb file, find the line:
+
+require 'rails/all'
+
+And replace it with:
+
+require "rails"
+
+# Include each railties manually, excluding `active_storage/engine`
+require "active_model/railtie"
+require "active_job/railtie"
+require "active_record/railtie"
+# require "active_storage/engine"
+require "action_controller/railtie"
+require "action_mailer/railtie"
+require "action_view/railtie"
+require "action_cable/engine"
+require "sprockets/railtie"
+require "rails/test_unit/railtie"
+
+Undefined method `active_storage' error
+
+
+NoMethodError: undefined method `active_storage' for #<Rails::Application::Configuration
+You have a reference to ActiveStorage in one of your config/application.rb or config/environments/*.rb files which looks like:
+
+# Store uploaded files on the local file system (see config/storage.yml for options)
+config.active_storage.service = :local
+Remove that line and also the config/storage.yml if it is present, and you should be good to go.
+
+Skip adding ActiveStorage on new builds
+If you're starting a new project and you'd like to skip having ActiveStorage be added from the get go, add the --skip-active-storage argument when you generate a new project. For example:
+
+rails new AwesomeProject --skip-active-storage
