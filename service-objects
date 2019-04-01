@@ -133,3 +133,146 @@ services/suggestion/build.rb
 services/suggestion/destroy.rb
 services/topic/build.rb
 ...
+
+Service Objects for Ruby on Rails: how you can refactor Models, Views and Controllers
+Go to the profile of ryanwhocodes
+ryanwhocodes
+Aug 15, 2018
+
+This tutorial will explain how you can refactor Ruby on Rails apps using classes or modules that perform a specific task, called Service Objects. By extracting code to them, you will be able to write cleaner code that is better organised and easier to maintain.
+
+Service Objects
+Refactor
+Extract code from Models, Views and Controllers
+Guard clauses
+Find out more
+Service Objects
+Service Objects are classes or modules that have one public method, often named #call, and are designed to perform a single task or service.
+
+They are a way of managing logic so that other areas of a Ruby on Rails app do not take on too much responsibility. Rails apps are criticised when too much logic is placed in the Models, Views and Controllers — and Service Objects are one solution.
+
+Here are examples of Service Objects to demonstrate their basic structure.
+
+Service Object as a class
+Classes are a good choice if you want to store data in instance variables.
+
+class ServiceObject
+  def call(arg1, arg2, ...etc)
+    new(arg1, arg2, ...etc).call
+  end
+private
+def initialize(arg1, arg2, ...etc)
+    @var = arg1
+    @var = arg2
+    ...etc
+  end
+def call
+   # Logic goes here
+  end
+end
+Service Object as a module
+If you don’t want to store any data as instance variables, then a module might be a lighter option.
+
+module ServiceObject
+  def self.call(arg1, arg2, ...etc)
+   # Logic goes here
+  end
+end
+For more of an introduction to Service Objects, check out: A simple explanation of Service Objects for Ruby on Rails.
+
+
+Refactor
+When you first start a small Ruby on Rails app, it may not seem necessary to modularise your code and create lots of extra Service Objects. But as your app grows, it can also lead to complex and long code blocks in Models, Views and Controllers that can be tricky to change later.
+
+Create folders to organise your Service Objects
+Think about what you want each Service Object to achieve. Then group them accordingly into folders within your app/services folder (create this if you don’t have one already). Folder categories could be related to each model, process, or type of service, such as Search.
+
+services/suggestion/builder.rb
+services/login/validator.rb
+services/search/suggestions_by_tag.rb
+...
+Use modules to manage the namespace of Service Objects
+As you create more and more Service Objects, they can be grouped into namespaces to organise them using modules.
+
+module Suggestion
+  module Builder
+    def self.call(params)
+      # logic goes here
+    end
+  end
+end
+Ensure that the file path matches the module name structure for your Service Objects!
+
+Now that you’ve identified the responsibility for each Service Object, next I will show you how to extract code into them from other parts of your Rails app.
+
+
+Extract code from Models, Views and Controllers
+To ensure that extracting code to a new Service Object from other areas of your app does not break existing functionality, it is a software development best practice to do this in a test-driven way.
+
+Testing
+Hopefully, you will have existing unit tests for your code that you can move into a test file for your new Service Object. If you don’t, you need to ensure that all areas of the new class or module are tested. It is also important to have integration tests to see how the change will impact other areas of your app when your Service Object is called.
+
+Extract code to the Service Object
+This will demonstrate a code extraction from a Controller to a Service Object, but the same principle can apply to other parts of a Ruby on Rails app.
+
+The original controller
+class SuggestionController < ApplicationController
+  def create
+    topic_name = params[:topic_name]
+    suggestion_text = params[:suggestion_text]
+    topic = Topic.find_by(name: topic_name)
+    @suggestion = 
+      Suggestion.new(topic: topic, text: suggestion_text)
+    if @suggestion.save!
+      render(:show)
+    else
+      redirect_to(:root)
+    end
+  end
+end
+The code extracted to a Service Object
+module Suggestion
+  module Builder
+    def self.call(params)
+      topic_name = params[:topic_name]
+      suggestion_text = params[:suggestion_text]
+      topic = Topic.find_by(name: topic_name)
+      Suggestion.new(topic: topic, text: suggestion_text)
+    end
+  end
+end
+An example of a refactored controller using a Service Object
+class SuggestionController < ApplicationController
+  def create
+    @suggestion = Services::Suggestion::Builder.call(params)
+    if @suggestion.save!
+      render(:show)
+    else
+      redirect_to(:root)
+    end
+  end
+end
+Now you have the hang of creating a Service Object, you can use them to further clean up your code using guard clauses.
+
+
+For an introduction to guard clauses and code extractions in Ruby, check out: En garde! How you can refactor nested ifs with guard clauses in Ruby.
+Guard clauses
+Guard clauses are a way of writing code that guards the flow of logic from continuing if certain conditions are met, or not met.
+
+return ACTION if CONDITION
+Service Objects can be used to design or refactor code so that logic is kept out of other parts of a Ruby on Rails app, such as Controllers.
+
+In this example, you can see how responsibilities for managing the user, Suggestion record, and view rendering are handled outside of the Controller by Service Objects. This shows how they can be used for both ACTION and CONDITION purposes within guard clauses.
+
+class SuggestionController < ApplicationController
+  def create
+    return redirect_to(:root) unless 
+      Services::User::Validator.call(params)
+    @suggestion = 
+      Services::Suggestion::Builder.call(params)
+    return Services::Suggestion::ViewRenderer.call if
+      @suggestion.save!
+    redirect_to(:root)
+  end
+end
+
