@@ -1,0 +1,10 @@
+Sending email is the most common task that can and should be done in the background job. 
+There is no reason to send emails immediately (before the response is rendered), and I always move 
+all emails to the queue. Even if the email server responds in 100ms, that’s still 100ms that you’re 
+making your user wait when they don’t need to.
+
+Sending emails via a background job is super simple with Active Job, mainly because it comes built-in to ActionMailer.
+
+By changing the method deliver_now to deliver_later, Active Job will automatically send this email asynchronously in the queue.
+
+UserMailer.welcome(@user).deliver_later
