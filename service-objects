@@ -1,0 +1,135 @@
+Service Objects for Ruby on Rails
+
+
+
+A Suggestion record created using a Service Object in my Ruby on Rails app
+Rails follows a Model-View-Controller pattern. This raises questions around where programming logic should go 
+once a Ruby on Rails application reaches a certain size. Generally, the principles are:
+
+Forget fat Models (don’t allow them to become bloated)
+Keep Views dumb (so don’t put complex logic there)
+And Controllers skinny (so don’t put too much there)
+So where should you put anything that’s more than a simple query or action?
+
+Introducing… The Service Object
+One way to support Object-Oriented Design is with the Service Object. This can be a class or module in Ruby 
+ that performs an action. It can help take out logic from other areas of the MVC files. Trying this out for the
+ first time in a Rails project, I started with a bloated controller that included the following method:
+
+class SuggestionController < ApplicationController
+def create
+    @topic_name = params[:topic_name]
+    @suggestion_text = params[:suggestion_text]
+    @suggestion = Suggestion.new(topic: Topic.first(name: @topic_name), text: @suggestion_text)
+    if @suggestion.save
+      flash.notice = 'Suggestion added!'
+      render @suggestion
+    else
+      flash.alert = create_fail_error_message(@suggestion)
+      redirect_to :new
+    end
+  end
+end
+
+Extracting this to a Service Object is relatively painless once you understand the design principles.
+
+Create a services folder within the Rails’ app folder
+Create your Service Object file, for example suggestion_service.rb
+Extract the code from the controller into the SuggestionService class/module
+Reload your Rails app and try it out!
+
+Create Service Objects as modules
+I decided to go for the module approach, and used a build method to create a new service. This made it look very
+ similar to a factory design pattern.
+
+module SuggestionService
+  class << self
+    def create(params)
+      topic_name = params[:topic_name]
+      suggestion_text = params[:suggestion_text]
+      topic = Topic.find_by(name: topic_name)
+      Suggestion.new(topic: topic, text: suggestion_text)
+    end
+  end
+end
+It also made the controller’s code a lot more manageable.
+
+class SuggestionController < ApplicationController
+def create
+    @suggestion = SuggestionService.create(params)
+    if @suggestion.save
+      flash.notice = 'Suggestion added!'
+      render @suggestion
+    else
+      flash.alert = create_fail_error_message(@suggestion)
+      redirect_to :new
+    end
+  end
+end
+
+Successful use of the SuggestionService object confirmed by my app!
+To use extraction and refactoring like this in production level applications, you need to include some way of 
+  handling errors gracefully when creating the Service. CreateFailErrorMessageService Service Object, anyone?
+
+  def create_fail_error_message(record)
+    "Could not create #{record.class}" \
+    " because #{record.errors.full_messages.join(', ')}"
+  end
+This is currently in my ApplicationController (which my other controllers inherit from), but could easily be 
+ extracted to other Service Objects.
+
+Create Service Objects as classes
+Other flavours of Service Objects use classes instead of modules that might store some instance variables and have 
+ other methods to support the service. My code could be rewritten as:
+
+class NewSuggestionService
+  def initialize(params)
+    @topic_name = params[:topic_name]
+    @suggestion_text = params[:suggestion_text]
+  end
+  def call
+    topic = Topic.find_by(name: @topic_name)
+    Suggestion.new(topic: topic, text: @suggestion_text)
+  end
+end
+And the code would then look slightly different in the controller.
+
+class SuggestionController < ApplicationController
+def create
+    @suggestion = NewSuggestionService.new(params).call
+    if @suggestion.save
+      flash.notice = 'Suggestion added!'
+      render :show
+    else
+      flash.alert = create_fail_error_message(@suggestion)
+      redirect_to :new
+    end
+  end
+end
+If you start using more and more Service Objects you might find you end up with a rapidly-expanding services folder. 
+ You can manage this growth by organising them into folders and modules.
+
+
+Keep calm and use modules to manage many Service Objects in Ruby on Rails. Image generated from www.keepcalmandposters.com
+Manage many Service Objects with modules
+Once you understand the principles of Service Objects, it is easy to build upon this. And the service folder structure 
+ can be expanded to reflect the different varieties of objects and purposes it serves. As you create more and more Service
+ Objects, they can be grouped into namespaces to organise them using modules.
+
+module Suggestion
+  module Build
+    def self.call(params)
+      topic_name = params[:topic_name]
+      suggestion_text = params[:suggestion_text]
+      topic = Topic.find_by(name: topic_name)
+      Suggestion.new(topic: topic, text: suggestion_text)
+    end
+  end
+end
+Then place them into a folder path to reflect the module structure otherwise Rails won’t load it automatically. 
+ You may want to simplify the naming at this point.
+
+services/suggestion/build.rb
+services/suggestion/destroy.rb
+services/topic/build.rb
+...
