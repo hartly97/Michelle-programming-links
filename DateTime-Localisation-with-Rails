@@ -1,0 +1,33 @@
+
+
+Rails
+rails-i18n gem  https://github.com/svenfuchs/rails-i18n
+
+I18n.l(DateTime.now, format: :default)	  Sun, 03 Mar 2019 14:17:01 +0000
+I18n.l(DateTime.now, format: :short)	    03 Mar 14:17
+I18n.l(DateTime.now, format: :long)	      March 03, 2019 14:17
+
+Add that gem to your Gemfile, then you can either set the locale from the Accept-Language browser header, 
+  or just pass the format argument to your I18n.l method call. 
+ https://guides.rubyonrails.org/i18n.html#choosing-an-implied-locale
+
+Code	                                                    Output
+I18n.l(DateTime.now, format: :long, locale: :'en-US')	    March 03, 2019 02:37 PM
+I18n.l(DateTime.now, format: :long, locale: :'en-GB')	    03 March, 2019 14:38
+I18n.l(DateTime.now, format: :long, locale: :'de')	      Sonntag, 03. März 2019, 14:38 Uhr
+
+
+Ruby
+Method	                strftime Format	              Output
+DateTime.now.httpdate	  %a, %d %b %Y %H:%M:%S         GMT	Sun, 03 Mar 2019 13:45:03 GMT
+DateTime.now.iso8601	  %Y-%m-%dT%H:%M:%S+%H:%M	      2019-03-03T13:45:17+00:00
+DateTime.now.jisx0301	  H%d.%m.%yT%H:%M:%S+%H:%M	    H31.03.03T13:45:26+00:00
+DateTime.now.rfc3339	  %Y-%m-%dT%H:%M:%S+%H:%M	      2019-03-03T13:45:37+00:00
+DateTime.now.rfc2822	  %a, %-d %b %Y %H:%M:%S +%H%M	Sun, 3 Mar 2019 13:45:48 +0000
+DateTime.now.rfc822	    %a, %-d %b %Y %H:%M:%S +%H%M	Sun, 3 Mar 2019 13:45:58 +0000
+DateTime.now.xmlschema	%Y-%m-%dT%H:%M:%S+%H:%M	      2019-03-03T13:49:32+00:00
+DateTime.now.to_i	      %s	                          1551621698
+
+DateTime   https://ruby-doc.org/stdlib-2.6.1/libdoc/date/rdoc/DateTime.html
+
+strftimer  A Ruby strftime generator  http://strftimer.com/     
