@@ -1,0 +1,106 @@
+rails 6 project using a gem
+
+$ rvm install ruby-2.6.2
+
+$ ruby -v                                                                             
+
+ruby 2.6.2p47 (2019-03-13 revision 67232) [x86_64-darwin18]
+
+$ gem -v
+3.0.3
+
+$ gem update --system
+
+$ rvm gemset list
+
+$ rvm gemset use global
+
+$ gem list
+
+$ gem outdated
+
+$ gem update
+
+$ echo "gem: --no-document" >> ~/.gemrc
+
+$ gem install bundler
+
+$ gem install nokogiri
+
+Install Rails
+make a gemset for the beta release:
+$ rvm use ruby-2.6.2@rails6.0.0.beta3 --create
+
+$ gem install rails --version=6.0.0.beta3
+
+$ rails -v
+
+New Rails Application
+Here’s how to create a project-specific gemset, installing Rails, and creating a new application.
+
+$ mkdir todo
+
+$ cd todo
+
+$ rvm use ruby-2.6.2@todo --ruby-version --create
+
+$ gem install rails --version=6.0.0.beta3
+
+$ rails new .
+
+$ yarn -v 
+
+$ yarn check
+
+$ yarn check --integrity
+
+$ yarn check --verify-tree
+
+if needed:
+$ brew install yarn
+
+$ brew install redis
+
+$ gem install foreman
+
+$ gem 'devise', '~> 4.6', '>= 4.6.1'
+
+$ bundle
+
+$ rails generate devise:install
+
+Some setup you must do manually if you haven't yet:
+
+  1. Ensure you have defined default url options in your environments files. Here
+     is an example of default_url_options appropriate for a development environment
+     in config/environments/development.rb:
+
+       config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+
+     In production, :host should be set to the actual host of your application.
+
+  2. Ensure you have defined root_url to *something* in your config/routes.rb.
+     For example:
+
+       root to: "home#index"
+
+  3. Ensure you have flash messages in app/views/layouts/application.html.erb.
+     For example:
+
+      <%= notice %>
+
+      <%= alert %>
+
+  4. You can copy Devise views (for customization) to your app by running:
+
+$ rails g devise:views
+
+$ rails db:create
+
+$ rails generate devise User
+
+$ rails db:migrate
+
+
+
+
