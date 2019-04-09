@@ -1,0 +1,26 @@
+Responsive Embeds
+Create responsive video or slideshow embeds based on the width of the parent.
+
+Add the .embed-responsive-item to any embed elements (like <iframe> or <video>) in a parent element with .embed-responsive and an aspect ratio of your choice:
+
+Example
+Example
+<!-- 21:9 aspect ratio -->
+<div class="embed-responsive embed-responsive-21by9">
+  <iframe class="embed-responsive-item" src="..."></iframe>
+</div>
+
+<!-- 16:9 aspect ratio -->
+<div class="embed-responsive embed-responsive-16by9">
+  <iframe class="embed-responsive-item" src="..."></iframe>
+</div>
+
+<!-- 3:4 aspect ratio -->
+<div class="embed-responsive embed-responsive-3by4">
+  <iframe class="embed-responsive-item" src="..."></iframe>
+</div>
+
+<!-- 1:1 aspect ratio -->
+<div class="embed-responsive embed-responsive-1by1">
+  <iframe class="embed-responsive-item" src="..."></iframe>
+</div>
