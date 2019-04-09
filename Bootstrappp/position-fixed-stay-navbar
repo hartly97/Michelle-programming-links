@@ -1,0 +1,21 @@
+Use the .fixed-top class to make any element fixed/stay at the top of the page:
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+  ...
+</nav>
+
+Use the .fixed-bottom class to make any element fixed/stay at the bottom of the page:
+
+
+Example
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-bottom">
+  ...
+</nav>
+Use the .sticky-top class to make any element fixed/stay at the top of the page when you scroll past it. Note: This class does not work in IE11 and earlier (will treat it as position:relative).
+
+
+Example
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark sticky-top">
+  ...
+</nav>
