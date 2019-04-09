@@ -1,0 +1,65 @@
+Bootstrap JS Modal
+Modal CSS Classes
+For a tutorial about Modals, read our Bootstrap Modal Tutorial.
+
+Class	Description	Example
+.modal	Creates a modal	
+.modal-content	Styles the modal properly with border, background-color, etc. Use this class to add the modal's header, body, and footer	
+.modal-dialog-centered	Centers the modal vertically and horizontally within the page	
+.modal-dialog-scrollable	Adds a scrollbar inside the modal	
+.modal-header	Defines the style for the header of the modal	
+.modal-body	Defines the style for the body of the modal	
+.modal-footer	Defines the style for the footer in the modal. Note: This area is right-aligned by default. To change this, add the justify-content-start or justify-content-center together with the .modal-footer class	
+.modal-sm	Specifies a small modal	
+.modal-lg	Specifies a large modal	
+.fade	Adds an animation/transition effect which fades the modal in and out	
+Trigger the Modal Via data-* Attributes
+Add data-toggle="modal" and data-target="#modalID" to any element.
+
+Note: For <a> elements, omit data-target, and use href="#modalID" instead:
+
+Example
+<!-- Buttons -->
+<button type="button" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<!-- Links -->
+<a data-toggle="modal" href="#myModal">Open Modal</a>
+
+<!-- Other elements -->
+<p data-toggle="modal" data-target="#myModal">Open Modal</p>
+Trigger Via JavaScript
+Enable manually with:
+
+Example
+$("#myModal").modal()
+Modal Options
+Options can be passed via data attributes or JavaScript. For data attributes, append the option name to data-, as in data-backdrop="".
+
+Name	Type	Default	Description	Try it
+backdrop	boolean or the string "static"	true	Specifies whether the modal should have a dark overlay:
+
+true - dark overlay
+false - no overlay (transparent)
+If you specify the value "static", it is not possible to close the modal when clicking outside of it
+
+keyboard	boolean	true	Specifies whether the modal can be closed with the escape key (Esc):
+
+true - the modal can be closed with Esc
+false - the modal cannot be closed with Esc
+show	boolean	true	Specifies whether to show the modal when initialized	
+Modal Methods
+The following table lists all available modal methods.
+
+Method	Description	Try it
+.modal(options)	Activates the content as a modal. See options above for valid values	
+.modal("toggle")	Toggles the modal	
+.modal("show")	Opens the modal	
+.modal("hide")	Hides the modal	
+Modal Events
+The following table lists all available modal events.
+
+Event	Description	Try it
+show.bs.modal	Occurs when the modal is about to be shown	
+shown.bs.modal	Occurs when the modal is fully shown (after CSS transitions have completed)	
+hide.bs.modal	Occurs when the modal is about to be hidden	
+hidden.bs.modal	Occurs when the modal is fully hidden (after CSS transitions have completed)
