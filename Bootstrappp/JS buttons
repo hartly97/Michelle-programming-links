@@ -1,0 +1,39 @@
+Bootstrap 4 JS Button
+Button CSS Classes
+For a tutorial about Buttons, read our Bootstrap Buttons Tutorial.
+
+The classes below can be used to style any <a>, <button>, or <input> element:
+
+Class	Description	Example
+.btn	Adds basic styling to any button	
+.btn-block	Makes a block-level button (spans the full width of the parent element)	
+.btn-danger	Indicates a dangerous or potentially negative action	
+.btn-dark	Dark grey button	
+.btn-default	Indicates a default/standard button	
+.btn-info	Contextual button for informational alert messages	
+.btn-lg	Makes a large button	
+.btn-light	Light grey button	
+.btn-link	Makes a button look like a link (will still have button behavior)	
+.btn-outline-*	Creates an outlined/bordered button. Use any of the contextual classes as * (btn-outline-primary, btn-outline-success, etc)	
+.btn-primary	Provides extra visual weight and identifies the primary action in a set of buttons	
+.btn-sm	Makes a small button	
+.btn-success	Indicates a successful or positive action	
+.btn-secondary	Indicates a "less" important action	
+.btn-toolbar	Combine sets of button groups into button toolbars for more complex components	
+.btn-warning	Indicates caution should be taken with this action	
+.active	Makes the button appear pressed	
+.disabled	Makes the button disabled	
+Via JavaScript
+Enable manually with:
+
+$('.btn').button();
+Button Options
+None
+Button Methods
+The following table lists all available button methods.
+
+Note: Methods can also be passed via data attributes; append the method name to data-, as in data-toggle or data-dispose.
+
+Method	Description	Try it
+.button("toggle")	Makes the button look pressed	
+.button("dispose")	Destroys an element's button
