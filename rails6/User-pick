@@ -1,0 +1,6 @@
+User.pick(:id)
+
+User.pick(:id, :username)
+
+However, you should note that this code is just a shorthand for limit(1).pluck(*column_names).first. 
+It does not guaranteed the first value ordered by any column, so you may need to do .order(:id).pick(___)
