@@ -29,3 +29,5 @@ rvm gemdir
 rvm gemset
 
 rvm gemset list
+
+$ rvm use ruby-2.6.2@rails6.0.0.beta3 --create
