@@ -1,0 +1,33 @@
+Generating a job
+Active Job comes with a generator which will create not only your job class but also a test stub for it.
+
+rails g job TweetNotifier
+  invoke  test_unit
+  create  test/jobs/tweet_notifier_job_test.rb
+  create  app/jobs/tweet_notifier_job.rb
+
+Adding an item to the queue
+If you want to process the job as soon as possible, you can use the perform_later method. 
+ As soon as a worker is available it will process the job.
+
+UpdateUserStatsJob.perform_later user
+
+Queueing for later
+If you would rather have the job performed a week from now, some queue backends allow you to 
+  pass additional time parameters when adding a job.
+
+UserReminderJob.set(wait: 1.week).perform_later user
+
+What goes in a job class?
+The job class is where you put the code that will be executed by the queue. There is a perform method
+   which is called and sent whatever parameters were sent when the job was first enqueued (when you called the perform_later method).
+
+class UpdateUserStatsJob < ActiveJob::Base 
+  queue_as :default
+
+  def perform(user) 
+    user.update_stats 
+  end 
+end
+
+https://blog.codeship.com/how-to-use-rails-active-job/
