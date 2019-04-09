@@ -1,0 +1,3 @@
+Center an element with the .mx-auto class (adds margin-left and margin-right: auto):
+
+<div class="mx-auto bg-warning" style="width:150px">Centered</div>
