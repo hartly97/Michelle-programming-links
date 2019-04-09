@@ -1,0 +1,19 @@
+rails routes --expanded
+
+rails routes | grep products
+
+rails routes -c users
+
+Pattern Specific
+rails routes -g wishlist
+
+# Search with HTTP Verb
+$ rails routes -g POST
+
+# Search with URI pattern
+$ rails routes -g admin
+
+
+rails db:system:change 
+
+rails db:migrate:status
