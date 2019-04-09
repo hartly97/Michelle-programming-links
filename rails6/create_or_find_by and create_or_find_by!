@@ -1,0 +1,47 @@
+create_or_find_by and create_or_find_by!
+create_or_find_by is an improvement over find_or_create_by because find_or_create_by first queries for the record and then inserts it if none is found. This might lead to a race condition.
+As mentioned by DHH in the pull request, create_or_find_by has few cons too:
+	•	The table must have unique constraints on relevant columns.
+	•	This method relies on exception handling which is generally slower.
+	•	
+Rails 6.0.0.beta2
+>> class CreateUsers < ActiveRecord::Migration[6.0]
+>>   def change
+>>     create_table :users do |t|
+>>       t.string :name, index: { unique: true }
+>>
+>>       t.timestamps
+>>     end
+>>   end
+>> end
+
+>> class User < ApplicationRecord
+>>   validates :name, presence: true
+>> end
+
+
+>> User.create_or_find_by(name: 'Amit')
+BEGIN
+INSERT INTO "users" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "Amit"], ["created_at", "2019-03-07 09:33:23.391719"], ["updated_at", "2019-03-07 09:33:23.391719"]]
+COMMIT
+
+=> #<User id: 1, name: "Amit", created_at: "2019-03-07 09:33:23", updated_at: "2019-03-07 09:33:23">
+
+>> User.create_or_find_by(name: 'Amit')
+BEGIN
+INSERT INTO "users" ("name", "created_at", "updated_at") VALUES ($1, $2, $3) RETURNING "id"  [["name", "Amit"], ["created_at", "2019-03-07 09:46:37.189068"], ["updated_at", "2019-03-07 09:46:37.189068"]]
+ROLLBACK
+
+=> #<User id: 1, name: "Amit", created_at: "2019-03-07 09:33:23", updated_at: "2019-03-07 09:33:23">
+
+>> User.create_or_find_by(name: nil)
+BEGIN
+COMMIT
+
+=> #<User id: nil, name: nil, created_at: nil, updated_at: nil>
+
+>> User.create_or_find_by!(name: nil)
+
+=> Traceback (most recent call last):
+        1: from (irb):2
+ActiveRecord::RecordInvalid (Validation failed: Name can't be blank)
