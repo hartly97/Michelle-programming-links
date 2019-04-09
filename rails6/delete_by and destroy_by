@@ -1,0 +1,19 @@
+delete_by and destroy_by
+Before Rails 6, deleting/destroying the record(s) which are matching the given condition was done as shown below.
+  # Example to destroy all authors matching the given condition
+  Author.find_by(email: "abhay@example.com").destroy
+  Author.where(email: "abhay@example.com", rating: 4).destroy_all
+
+  # Example to delete all authors matching the given condition
+  Author.find_by(email: "abhay@example.com").delete
+  Author.where(email: "abhay@example.com", rating: 4).delete_all
+The above examples were missing the symmetry like find_or_create_by and find_by methods.
+In Rails 6, the new delete_by and destroy_by methods have been added as ActiveRecord::Relation methods. ActiveRecord::Relation#delete_by is short-hand for relation.where(conditions).delete_all. Similarly, ActiveRecord::Relation#destroy_by is short-hand for relation.where(conditions).destroy_all.
+Here is how it can be used.
+  # Example to destroy all authors matching the given condition using destroy_by
+  Author.destroy_by(email: "abhay@example.com")
+  Author.destroy_by(email: "abhay@example.com", rating: 4)
+
+  # Example to destroy all authors matching the given condition using delete_by
+  Author.delete_by(email: "abhay@example.com")
+  Author.delete_by(email: "abhay@example.com", rating: 4)
