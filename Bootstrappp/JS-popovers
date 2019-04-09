@@ -96,3 +96,119 @@ shown.bs.popover	Occurs when the popover is fully shown (after CSS transitions h
 hide.bs.popover	Occurs when the popover is about to be hidden	
 hidden.bs.popover	Occurs when the popover is fully hidden (after CSS transitions have completed)	
 inserted.bs.popover	Occurs after the show.bs.popover event when the popover template has been added to the DOM
+
+
+Bootstrap JS Popover
+JS Popover
+The Popover component is similar to tooltips; it is a pop-up box that appears when the user clicks on an element. The difference is that the popover can contain much more content.
+
+For a tutorial about Popovers, read our Bootstrap Popover Tutorial.
+
+Enable via data-* Attributes
+The data-toggle="popover" activates the popover.
+
+The title attribute specifies the header text of the popover.
+
+The data-content attribute specifies the text that should be displayed inside the popover's body.
+
+Example
+<a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a>
+Via JavaScript
+Popovers are not CSS-only plugins, and must therefore be initialized with jQuery: select the specified element and call the popover() method.
+
+Example
+// Select all elements with data-toggle="popover" in the document
+$('[data-toggle="popover"]').popover(); 
+
+// Select a specified element
+$('#myPopover').popover();
+Popover Options
+Options can be passed via data attributes or JavaScript. For data attributes, append the option name to data-, as in data-placement="".
+
+Name	Type	Default	Description	Try it
+animation	boolean	true	
+Specifies whether to add a CSS fade transition effect when opening and closing the popover
+
+true - Add a fading effect
+false - Do not add a fading effect
+container	string, or the boolean false	false	Appends the popover to a specific element. 
+Example: container: 'body'	
+content	string	""	Specifies the text inside the popover's body	
+delay	number, or object	0	Specifies the number of milliseconds it will take to open and close the popover.
+
+To specify a delay for opening and another one for closing, use the object structure:
+
+delay: {show: 500, hide: 100} - which will take 500 ms to open the popover, but only 100 ms to close it	
+html	boolean 	false	Specifies whether to accept HTML tags in the popover:
+ 
+true - Accept HTML tags
+false - Do not accept HTML tags
+Note: The HTML must be inserted in the title attribute (or using the title option). 
+
+When set to false (default), jQuery's text() method will be used. Use this if you are worried about XSS attacks	
+placement	string	"right"	Specifies the popover position. Possible values:
+
+"top" - Popover on top
+"bottom" - Popover on bottom
+"left" - Popover on left
+"right" - Popover on right
+"auto" - Lets the browser decide the position of the popover. For example, if the value is "auto left", the popover will display on the left side when possible, otherwise on the right. If the value is "auto bottom", the popover will display at the bottom when possible, otherwise on the top
+selector	string, or the boolean false	false	Adds the popover to a specified selector	
+template	string	 	Base HTML to use when creating the popover.
+
+The popover's title will be injected into the .popover-header.
+
+The popover's content will be injected into the .popover-body.
+
+.arrow will become the popover's arrow.
+
+The outermost wrapper element should have the .popover class.	
+title	string	""	Specifies the header text of the popover	
+trigger	string	"click"	Specifies how the popover is triggered. Possible values:
+
+"click" - Trigger the popover with a click
+"hover" - Trigger the popover on hover
+"focus" - Trigger the popover when it gets focus (by tabbing or clicking .e.g)
+"manual" - Trigger the popover manually
+Tip: To pass multiple values, separate them with a space	
+offset	number or a string	0	Offset of the popover relative to its target	
+fallbackPlacement	string or an aray	"flip"	Specifies which position Popper wil use on fallback	
+boundary	string or element	"scrollParent"	Overflow constraint boundary of the popover. Accepts the values "viewport", "window" or "scrollParent", or an HTML element	
+Popover Methods
+The following table lists all available popover methods.
+
+Method	Description	Try it
+.popover(options)	Activates the popover with an option. See options above for valid values	
+.popover("show")	Shows the popover	
+.popover("hide")	Hides the popover	
+.popover("toggle")	Toggles the popover	
+.popover("dispose")	Hides and destroys the popover	
+.popover("enable")	Enables the popover the ability to be shown. This is default	
+.popover("disable")	Removes the ability to show a popover. The popover can only be shown if it is re-enabled again	
+.popover("toggleEnabled")	Toggles the ability for the popover to be shown or hidden	
+.popover("update")	Updates the position of the popover	
+Popover Events
+The following table lists all available popover events.
+
+Event	Description	Try it
+show.bs.popover	Occurs when the popover is about to be shown	
+shown.bs.popover	Occurs when the popover is fully shown (after CSS transitions have completed)	
+hide.bs.popover	Occurs when the popover is about to be hidden	
+hidden.bs.popover	Occurs when the popover is fully hidden (after CSS transitions have completed)	
+inserted.bs.popover	Occurs after the show.bs.popover event when the popover template has been added to the DOM
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <h3>Popover Example</h3>
+  <a href="#" data-toggle="popover" title="Popover Header" data-content="Some content inside the popover">Toggle popover</a>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="popover"]').popover();   
+});
+</script>
