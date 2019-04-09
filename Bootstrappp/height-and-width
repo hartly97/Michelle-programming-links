@@ -1,0 +1,28 @@
+Width
+Set the width of an element with the w-* classes (.w-25, .w-50, .w-75, .w-100, .mw-100):
+
+Example
+Width 25%
+Width 50%
+Width 75%
+Width 100%
+Max Width 100%
+Example
+<div class="w-25 bg-warning">Width 25%</div>
+<div class="w-50 bg-warning">Width 50%</div>
+<div class="w-75 bg-warning">Width 75%</div>
+<div class="w-100 bg-warning">Width 100%</div>
+<div class="mw-100 bg-warning">Max Width 100%</div>
+Height
+Set the height of an element with the h-* classes (.h-25, .h-50, .h-75, .h-100, .mh-100):
+
+Example
+Height 25% Height 50% Height 75% Height 100% Max Height 100%
+Example
+<div style="height:200px;background-color:#ddd">
+  <div class="h-25 bg-warning">Height 25%</div>
+  <div class="h-50 bg-warning">Height 50%</div>
+  <div class="h-75 bg-warning">Height 75%</div>
+  <div class="h-100 bg-warning">Height 100%</div>
+  <div class="mh-100 bg-warning" style="height:500px">Max Height 100%</div>
+</div>
