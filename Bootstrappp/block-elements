@@ -1,0 +1,15 @@
+To make an element into a block element, add the .d-block class. Use any of the d-*-block classes to control
+  WHEN the element should be a block element on a specific screen width:
+
+Example
+d-block
+d-sm-block
+d-md-block
+d-lg-block
+d-xl-block
+
+<span class="d-block bg-success">d-block</span>
+<span class="d-sm-block bg-success">d-sm-block</span>
+<span class="d-md-block bg-success">d-md-block</span>
+<span class="d-lg-block bg-success">d-lg-block</span>
+<span class="d-xl-block bg-success">d-xl-block</span>
