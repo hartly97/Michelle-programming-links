@@ -1,0 +1,79 @@
+Bootstrap JS Tab
+Tab CSS Classes
+Tabs are used to separate content into different panes where each pane is viewable one at a time.
+
+For a tutorial about Tabs, read our Bootstrap Tabs/Pills Tutorial.
+
+Class	Description	Example
+.nav nav-tabs	Creates navigation tabs	
+.nav nav-pills	Creates navigation pills	
+.nav-item	Creates tab items	
+.nav-link	Styles links inside the navigation tab	
+.nav-justified	Makes navigation tabs/pills equal widths of their parent, at screens wider than 768px. On smaller screens, the nav tabs are stacked	
+.tab-content	Together with .tab-pane and data-toggle="tab", it makes the tab toggleable	
+.tab-pane	Together with .tab-content and data-toggle="tab", it makes the tab toggleable	
+Via data-* Attributes
+Add data-toggle="tab" to each tab, and add a .tab-pane class with a unique ID for every tab and wrap them in a .tab-content class.
+
+Example
+<!-- Nav tabs -->
+<ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" data-toggle="tab" href="#home">Home</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#menu1">Menu 1</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" data-toggle="tab" href="#menu2">Menu 2</a>
+  </li>
+</ul>
+
+<!-- Tab panes -->
+<div class="tab-content">
+  <div class="tab-pane active container" id="home">...</div>
+  <div class="tab-pane container" id="menu1">...</div>
+  <div class="tab-pane container" id="menu2">...</div>
+</div>
+Via JavaScript
+Enable manually with:
+
+Example
+// Select all tabs
+$('.nav-tabs a').click(function(){
+  $(this).tab('show');
+})
+
+// Select tab by name
+$('.nav-tabs a[href="#home"]').tab('show')
+
+// Select first tab
+$('.nav-tabs a:first').tab('show') 
+
+// Select last tab
+$('.nav-tabs a:last').tab('show') 
+
+// Select fourth tab (zero-based)
+$('.nav-tabs li:eq(3) a').tab('show')
+Tab Options
+None
+Tab Methods
+The following table lists all available tab methods.
+
+Method	Description	Try it
+.tab("show")	Shows the tab	
+Tab Events
+The following table lists all available tab events.
+
+Event	Description	Try it
+show.bs.tab	Occurs when the tab is about to be shown.	
+shown.bs.tab	Occurs when the tab is fully shown (after CSS transitions have completed)	
+hide.bs.tab	Occurs when the tab is about to be hidden	
+hidden.bs.tab	Occurs when the tab is fully hidden (after CSS transitions have completed)	
+Tip: Use jQuery's event.target and event.relatedTarget to get the active tab and the previous active tab:
+
+Example
+$('.nav-tabs a').on('shown.bs.tab', function(event){
+  var x = $(event.target).text();         // active tab
+  var y = $(event.relatedTarget).text();  // previous tab
+});
