@@ -1,0 +1,42 @@
+Bootstrap 4 JS Alert
+Alert CSS Classes
+For a tutorial about Alerts, read our Bootstrap Alerts Tutorial.
+
+Class	Description	Example
+.alert	Creates an alert message box	
+.alert-danger	Red alert. Indicates a dangerous or potentially negative action	
+.alert-dark	Dark alert. Dark grey alert box	
+.alert-dismissible	Indicates a closable alert box. Together with the .close class, this class is used to close the alert (adds extra padding)	
+.alert-heading	Adds color:inherit to the specified element	
+.alert-info	Light-blue alert.Indicates a neutral informative change or action	
+.alert-light	Light alert. Light grey alert box	
+.alert-link	Used on links inside alerts to provide matching colored links	
+.alert-primary	Blue alert. Indicates an important action	
+.alert-secondary	Grey alert. Indicates a "less" important action	
+.alert-success	Green alert. Indicates a successful or positive action	
+.alert-warning	Yellow alert. Indicates caution should be taken with this action	
+.close	Styles the close button for the alert message (floats right with a specified font-size, color, etc.)	
+Close Alerts Via data-* Attributes
+Add data-dismiss="alert" to a link or a button element to close the alert message.
+
+Example
+<a href="#" class="close" data-dismiss="alert">&times;</a>
+Close Alerts Via JavaScript
+Close manually with:
+
+Example
+$('.close').alert("close");
+Alert Options
+None
+Alert Methods
+The following table lists all available alert methods.
+
+Method	Description	Try it
+.alert("close")	Closes the alert message	
+.alert("dispose")	Destroys an element's alert.	
+Alert Events
+The following table lists all available alert events.
+
+Event	Description	Try it
+close.bs.alert	Occurs when the alert message is about to be closed	
+closed.bs.alert	Occurs when the alert message has been closed (will wait for CSS transitions to complete)
