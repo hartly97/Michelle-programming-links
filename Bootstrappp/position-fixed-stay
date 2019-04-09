@@ -1,0 +1,6 @@
+Use the .fixed-top class to make any element fixed/stay at the top of the page:
+
+
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark fixed-top">
+  ...
+</nav>
