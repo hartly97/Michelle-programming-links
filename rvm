@@ -1,0 +1,31 @@
+rvm gemset list
+
+gem list
+
+rvm list
+
+rvm gemset list_all
+
+rvm remove ruby-2.6.2
+
+rvm list known
+
+rvm list strings
+
+rvm list default string
+
+rvm list default
+
+rvm list rubies
+
+rvm info 2.5.0
+
+rvm rubygems current
+
+rvm info
+
+rvm gemdir
+
+rvm gemset
+
+rvm gemset list
