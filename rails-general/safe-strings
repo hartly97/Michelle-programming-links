@@ -1,5 +1,6 @@
 Safe Strings
-Active Support has the concept of (html) safe strings. A safe string is one that is marked as being insertable into HTML as is. It is trusted, no matter whether it has been escaped or not.
+Active Support has the concept of (html) safe strings. A safe string is one that is marked as being insertable into
+HTML as is. It is trusted, no matter whether it has been escaped or not.
 
 Strings are considered to be unsafe by default:
 
@@ -15,7 +16,9 @@ s.html_safe? # => true
 s            # => "<script>...</script>"
 It is your responsibility to ensure calling html_safe on a particular string is fine.
 
-If you append onto a safe string, either in-place with concat/<<, or with +, the result is a safe string. Unsafe arguments are escaped:
+If you append onto a safe string, either in-place with concat/<<, or with +, the result is a safe string. Unsafe
+
+arguments are escaped:
 
 "".html_safe + "<" # => "&lt;"
 Safe arguments are directly appended:
@@ -35,4 +38,5 @@ The raw helper calls html_safe for you:
 def raw(stringish)
   stringish.to_s.html_safe
 end
+
 Defined in active_support/core_ext/string/output_safety.rb.
