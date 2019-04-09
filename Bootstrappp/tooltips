@@ -1,0 +1,148 @@
+Bootstrap JS Tooltip
+JS Tooltip
+The Tooltip is a small pop-up box that appears when the user moves the mouse pointer over an element.
+
+For a tutorial about Tooltips, read our Bootstrap Tooltip Tutorial.
+
+Via data-* Attributes
+The data-toggle="tooltip" activates the tooltip.
+
+The title attribute specifies the text that should be displayed inside the tooltip.
+
+Example
+<a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a>
+Via JavaScript
+Tooltips are not CSS-only plugins, and must therefore be initialized with jQuery: select the specified element and call the tooltip() method.
+
+Example
+// Select all elements with data-toggle="tooltips" in the document
+$('[data-toggle="tooltip"]').tooltip(); 
+
+// Select a specified element
+$('#myTooltip').tooltip();
+Tooltip Options
+Options can be passed via data attributes or JavaScript. For data attributes, append the option name to data-, as in data-placement="".
+
+Name	Type	Default	Description	Try it
+animation	boolean	true	
+Specifies whether to add a CSS fade transition effect when showing and hiding the tooltip
+
+true - Add a fading effect
+false - Do not add a fading effect
+container	string, or the boolean false	false	Appends the tooltip to a specific element. 
+Example: container: 'body'	
+delay	number, or object	0	Specifies the number of milliseconds it will take to show and hide the tooltip.
+
+To specify a delay for showing and another one for hiding, use the object structure:
+
+delay: {show: 500, hide: 100} - which will take 500 ms to show the tooltip, but only 100 ms to hide it	
+html	boolean 	false	Specifies whether to accept HTML tags in the tooltip:
+ 
+true - Accept HTML tags
+false - Do not accept HTML tags
+Note: The HTML must be inserted in the title attribute (or using the title option). 
+
+When set to false (default), jQuery's text() method will be used. Use this if you are worried about XSS attacks	
+placement	string	"top"	Specifies the tooltip position. Possible values:
+
+"top" - Tooltip on top
+"bottom" - Tooltip on bottom
+"left" - Tooltip on left
+"right" - Tooltip on right
+"auto" - Lets the browser decide the position of the tooltip. For example, if the value is "auto left", the tooltip will display on the left side when possible, otherwise on the right. If the value is "auto bottom", the tooltip will display at the bottom when possible, otherwise on the top
+selector	string, or the boolean false	false	Adds the tooltip to a specified selector	
+template	string	 	Base HTML to use when creating the tooltip. 
+
+The tooltip's title will be inserted into the element having the class .tooltip-inner and the element with the class .tooltip-arrow will become the tooltip's arrow.
+
+The outermost wrapper element should have the .tooltip class.	
+title	string	""	Specifies the text that should be displayed inside the tooltip	
+trigger	string	"hover focus"	Specifies how the tooltip is triggered. Possible values:
+
+"click" - Trigger the tooltip with a click
+"hover" - Trigger the tooltip on hover
+"focus" - Trigger the tooltip when it gets focus (by tabbing or clicking .e.g)
+"manual" - Trigger the tooltip manually
+Tip: To pass multiple values, separate them with a space	
+offset	number or a string	0	Offset of the tooltip relative to its target	
+fallbackPlacement	string or an aray	"flip"	Specifies which position Popper wil use on fallback	
+boundary	string or element	"scrollParent"	Overflow constraint boundary of the tooltip. Accepts the values "viewport", "window" or "scrollParent", or an HTML element	
+Tooltip Methods
+The following table lists all available tooltip methods.
+
+Method	Description	Try it
+.tooltip(options)	Activates the tooltip with an option. See options above for valid values	
+.tooltip("show")	Shows the tooltip	
+.tooltip("hide")	Hides the tooltip	
+.tooltip("toggle")	Toggles the tooltip	
+.tooltip("dispose")	Hides and destroys the tooltip	
+Tooltip Events
+The following table lists all available tooltip events.
+
+Event	Description	Try it
+show.bs.tooltip	Occurs when the tooltip is about to be shown	
+shown.bs.tooltip	Occurs when the tooltip is fully shown (after CSS transitions have completed)	
+hide.bs.tooltip	Occurs when the tooltip is about to be hidden	
+hidden.bs.tooltip	Occurs when the tooltip is fully hidden (after CSS transitions have completed)	
+
+<div class="container mt-3">
+  <h3>Tooltip Example</h3>
+  <p>Tooltips must be initialized with jQuery: select the specified element and call the tooltip() method.</p>
+  <a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+
+----
+JS
+
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</head>
+<body>
+
+<div class="container mt-3">
+  <h3>Tooltip Example</h3>
+  <p>Tooltips must be initialized with jQuery: select the specified element and call the tooltip() method.</p>
+  <a href="#" data-toggle="tooltip" title="Hooray!">Hover over me</a>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('[data-toggle="tooltip"]').tooltip();   
+});
+</script>
+
+-----
+
+tooltip options
+
+	Activates the tooltip with an option. See options above for valid values
+
+<div class="container mt-3">
+  <h3>Tooltip Options</h3>
+  <p>The <strong>placement</strong> option specifies the tooltip position.</p>
+  <div>
+    <button class="btn btn-warning">Top</button>
+    <button class="btn btn-success">Bottom</button>
+    <button class="btn btn-danger">Left</button>
+    <button class="btn btn-primary">Right</button>
+  </div>
+</div>
+
+<script>
+$(document).ready(function(){
+  $('.btn-warning').tooltip({title: "Hooray", placement: "top"}); 
+  $('.btn-success').tooltip({title: "Hooray", placement: "bottom"}); 
+  $('.btn-danger').tooltip({title: "Hooray", placement: "left"}); 
+  $('.btn-primary').tooltip({title: "Hooray", placement: "right"}); 
+});
+</script>
+
+https://www.w3schools.com/bootstrap4/bootstrap_ref_js_tooltip.asp
