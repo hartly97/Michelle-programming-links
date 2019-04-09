@@ -1,6 +1,5 @@
 Removing Active Storage Routes from Rails 5.2
 
-
 In your config/application.rb file, find the line:
 
 require 'rails/all'
@@ -32,6 +31,7 @@ config.active_storage.service = :local
 Remove that line and also the config/storage.yml if it is present, and you should be good to go.
 
 Skip adding ActiveStorage on new builds
-If you're starting a new project and you'd like to skip having ActiveStorage be added from the get go, add the --skip-active-storage argument when you generate a new project. For example:
+If you're starting a new project and you'd like to skip having ActiveStorage be added from the get go, add the --skip-active-storage 
+argument when you generate a new project. For example:
 
 rails new AwesomeProject --skip-active-storage
