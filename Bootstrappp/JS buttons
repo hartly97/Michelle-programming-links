@@ -1,6 +1,5 @@
 Bootstrap 4 JS Button
 Button CSS Classes
-For a tutorial about Buttons, read our Bootstrap Buttons Tutorial.
 
 The classes below can be used to style any <a>, <button>, or <input> element:
 
@@ -23,12 +22,13 @@ Class	Description	Example
 .btn-warning	Indicates caution should be taken with this action	
 .active	Makes the button appear pressed	
 .disabled	Makes the button disabled	
+
 Via JavaScript
 Enable manually with:
-
 $('.btn').button();
 Button Options
 None
+
 Button Methods
 The following table lists all available button methods.
 
